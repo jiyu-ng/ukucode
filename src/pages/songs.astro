@@ -1,0 +1,44 @@
+---
+import Base from "../layouts/Base.astro";
+import { SONGS, songChords } from "../data/songs.js";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const title = "우쿨렐레 곡 코드 악보";
+const description = "우쿨렐레로 치는 저작권 프리 곡 코드 악보 모음. 동요·캐롤·민요를 가사와 코드로.";
+---
+<Base title={title} description={description}>
+  <section class="intro">
+    <h1>곡 코드 악보</h1>
+    <p>우쿨렐레로 바로 칠 수 있는 곡들이에요. 곡을 눌러 가사+코드를 확인하세요.</p>
+  </section>
+
+  <div class="song-list">
+    {SONGS.map((s) => (
+      <a class="song-item" href={`${base}/song/${s.slug}/`}>
+        <div class="si-main">
+          <span class="si-title">{s.title}</span>
+          <span class="si-note">{s.note}</span>
+        </div>
+        <div class="si-chords">{songChords(s).join(" · ")}</div>
+      </a>
+    ))}
+  </div>
+
+  <style>
+    .intro { text-align: center; margin: 6px 0 22px; }
+    .intro h1 { font-size: 22px; margin: 0 0 6px; }
+    .intro p { color: var(--muted); font-size: 14px; margin: 0; }
+    .song-list { display: flex; flex-direction: column; gap: 10px; }
+    .song-item {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+      padding: 14px 16px; text-decoration: none;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+    .song-item:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.07); border-color: var(--accent); }
+    .si-main { display: flex; flex-direction: column; }
+    .si-title { font-size: 16.5px; font-weight: 700; }
+    .si-note { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+    .si-chords { font-size: 13px; color: var(--accent); font-weight: 700; text-align: right; white-space: nowrap; }
+  </style>
+</Base>

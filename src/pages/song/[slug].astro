@@ -1,0 +1,95 @@
+---
+import Base from "../../layouts/Base.astro";
+import ChordDiagram from "../../components/ChordDiagram.astro";
+import { SONGS, songBySlug, songChords } from "../../data/songs.js";
+import { chordBySlug, chordSlug } from "../../data/chords.js";
+
+export function getStaticPaths() {
+  return SONGS.map((s) => ({ params: { slug: s.slug }, props: { song: s } }));
+}
+
+const { song } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const used = songChords(song);
+const usedChordObjs = used.map((sym) => chordBySlug(chordSlug(sym))).filter(Boolean);
+
+const title = `${song.title} 우쿨렐레 코드`;
+const description = `우쿨렐레로 치는 ${song.title} 코드 악보 (${song.note}). 가사와 코드, 운지 다이어그램을 한눈에.`;
+---
+<Base title={title} description={description}>
+  <nav class="crumb"><a href={`${base}/songs/`}>← 곡 목록</a></nav>
+
+  <article class="song">
+    <header class="song-head">
+      <h1>{song.title}</h1>
+      <p class="note">{song.note} · Key {song.key}</p>
+      <span class="badge">{song.license}</span>
+    </header>
+
+    {usedChordObjs.length > 0 && (
+      <section class="used">
+        <h2>이 곡에 쓰인 코드</h2>
+        <div class="used-grid">
+          {usedChordObjs.map((c) => (
+            <a class="used-card" href={`${base}/chord/${chordSlug(c.name)}/`}>
+              <span class="uc-name">{c.name}</span>
+              <ChordDiagram frets={c.frets} size={0.7} />
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="sheet">
+      {song.sections.map((sec) => (
+        <div class="sec">
+          {sec.label && <h3 class="sec-label">{sec.label}</h3>}
+          {sec.lines.map((line) => (
+            <div class="line">
+              {line.map((seg) => {
+                const cObj = seg.c ? chordBySlug(chordSlug(seg.c)) : null;
+                return (
+                  <span class="seg">
+                    <span class="seg-chord">
+                      {seg.c && cObj && <a href={`${base}/chord/${chordSlug(seg.c)}/`}>{seg.c}</a>}
+                      {seg.c && !cObj && seg.c}
+                    </span>
+                    <span class="seg-lyric">{seg.t}</span>
+                  </span>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      ))}
+    </section>
+
+    <p class="disclaimer">🎵 간단한 우쿨렐레 코드 버전이에요. 편곡에 따라 코드가 조금씩 다를 수 있어요.</p>
+  </article>
+
+  <style>
+    .crumb { margin: 4px 0 10px; }
+    .crumb a { color: var(--muted); text-decoration: none; font-size: 14px; }
+    .song-head { text-align: center; margin-bottom: 18px; }
+    .song-head h1 { font-size: 28px; margin: 6px 0 4px; }
+    .note { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
+    .badge { display: inline-block; background: #eaf6ea; color: #3f8f52; font-size: 11.5px; font-weight: 700; padding: 4px 11px; border-radius: 999px; }
+    .used { margin-bottom: 24px; }
+    .used h2, .sec-label { font-size: 14px; color: var(--muted); font-weight: 700; }
+    .used h2 { border-bottom: 1px solid var(--line); padding-bottom: 7px; }
+    .used-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .used-card { display: flex; flex-direction: column; align-items: center; gap: 2px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 8px 6px; text-decoration: none; }
+    .uc-name { font-size: 14px; font-weight: 800; }
+    .sheet { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 16px; }
+    .sec { margin-bottom: 18px; }
+    .sec:last-child { margin-bottom: 0; }
+    .sec-label { margin: 0 0 8px; }
+    .line { display: flex; flex-wrap: wrap; align-items: flex-end; margin-bottom: 12px; }
+    .seg { display: inline-flex; flex-direction: column; }
+    .seg-chord { height: 20px; font-size: 14px; font-weight: 800; color: var(--accent); line-height: 1; }
+    .seg-chord a { text-decoration: none; }
+    .seg-chord a:hover { text-decoration: underline; }
+    .seg-lyric { font-size: 17px; white-space: pre; }
+    .disclaimer { color: var(--muted); font-size: 12.5px; text-align: center; margin-top: 18px; }
+  </style>
+</Base>

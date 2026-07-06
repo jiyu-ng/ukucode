@@ -25,6 +25,10 @@ const desc = description || "우쿨렐레 코드 운지법을 다이어그램으
         <span class="brand-mark">🎸</span> 우쿨코드
       </a>
       <p class="tagline">우쿨렐레 코드 사전</p>
+      <nav class="site-nav">
+        <a href={`${base}/`}>코드</a>
+        <a href={`${base}/songs/`}>곡</a>
+      </nav>
     </header>
     <main><slot /></main>
     <footer class="site-foot">
@@ -49,6 +53,12 @@ const desc = description || "우쿨렐레 코드 운지법을 다이어그램으
       .brand { display: inline-flex; align-items: center; gap: 7px; font-size: 26px; font-weight: 800; text-decoration: none; letter-spacing: -0.5px; }
       .brand-mark { font-size: 24px; }
       .tagline { margin: 4px 0 0; color: var(--muted); font-size: 13.5px; }
+      .site-nav { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+      .site-nav a {
+        text-decoration: none; font-size: 14px; font-weight: 700; color: var(--muted);
+        padding: 6px 16px; border-radius: 999px; background: var(--card); border: 1px solid var(--line);
+      }
+      .site-nav a:hover { color: var(--accent); border-color: var(--accent); }
       .site-foot { text-align: center; color: var(--muted); font-size: 12.5px; padding: 24px 18px 40px; }
     </style>
   </body>
