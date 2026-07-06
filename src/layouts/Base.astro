@@ -1,0 +1,55 @@
+---
+const { title, description } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const fullTitle = title ? `${title} · 우쿨코드` : "우쿨코드 — 우쿨렐레 코드 사전";
+const desc = description || "우쿨렐레 코드 운지법을 다이어그램으로 한눈에. 메이저·마이너·7th 코드 잡는 법을 무료로 찾아보세요.";
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta name="theme-color" content="#fbf7f2" />
+    <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="site-head">
+      <a class="brand" href={`${base}/`}>
+        <span class="brand-mark">🎸</span> 우쿨코드
+      </a>
+      <p class="tagline">우쿨렐레 코드 사전</p>
+    </header>
+    <main><slot /></main>
+    <footer class="site-foot">
+      <p>우쿨코드 · 우쿨렐레 코드를 다이어그램으로 쉽게</p>
+    </footer>
+
+    <style is:global>
+      :root {
+        --bg: #fbf7f2; --card: #ffffff; --ink: #35302c; --muted: #8a7f78;
+        --line: #ece3da; --accent: #e8503a; --accent-soft: #fdeee9;
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0; background: var(--bg); color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", sans-serif;
+        line-height: 1.6;
+      }
+      main { max-width: 900px; margin: 0 auto; padding: 8px 18px 40px; }
+      a { color: inherit; }
+      .site-head { text-align: center; padding: 26px 18px 10px; }
+      .brand { display: inline-flex; align-items: center; gap: 7px; font-size: 26px; font-weight: 800; text-decoration: none; letter-spacing: -0.5px; }
+      .brand-mark { font-size: 24px; }
+      .tagline { margin: 4px 0 0; color: var(--muted); font-size: 13.5px; }
+      .site-foot { text-align: center; color: var(--muted); font-size: 12.5px; padding: 24px 18px 40px; }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+---
+// 우쿨렐레 코드 다이어그램 (SVG). props: frets=[G,C,E,A], size 조절 가능.
+const { frets, size = 1 } = Astro.props;
+
+const STRINGS = ["G", "C", "E", "A"];
+const FRET_ROWS = 4; // 표시할 프렛 칸 수
+
+const fretted = frets.filter((f) => f > 0);
+const maxF = Math.max(...frets, 0);
+const minF = fretted.length ? Math.min(...fretted) : 1;
+// maxF가 4 이하면 넛(nut)부터, 아니면 minF부터 시작하고 프렛번호 표기
+const startFret = maxF > FRET_ROWS ? minF : 1;
+const showNut = startFret === 1;
+
+// 좌표 (viewBox 기준)
+const W = 120, H = 148;
+const padX = 22, padTop = 26, padBottom = 14;
+const gridW = W - padX * 2;
+const gridH = H - padTop - padBottom;
+const colGap = gridW / (STRINGS.length - 1);
+const rowGap = gridH / FRET_ROWS;
+
+const stringX = (i) => padX + i * colGap;
+const fretY = (r) => padTop + r * rowGap; // r: 0..FRET_ROWS
+const dotY = (r) => fretY(r - 1) + rowGap / 2; // r: 1..FRET_ROWS
+---
+
+<svg class="chord-diagram" viewBox={`0 0 ${W} ${H}`} width={92 * size} height={113 * size}
+     role="img" xmlns="http://www.w3.org/2000/svg">
+  {Array.from({ length: FRET_ROWS + 1 }).map((_, r) => (
+    <line x1={padX} y1={fretY(r)} x2={padX + gridW} y2={fretY(r)}
+          stroke="#3a3230" stroke-width={showNut && r === 0 ? 4 : 1.2}
+          stroke-linecap="round" />
+  ))}
+  {STRINGS.map((_, i) => (
+    <line x1={stringX(i)} y1={fretY(0)} x2={stringX(i)} y2={fretY(FRET_ROWS)}
+          stroke="#3a3230" stroke-width="1.2" />
+  ))}
+  {!showNut && (
+    <text x={padX - 7} y={dotY(1) + 4} text-anchor="end"
+          font-size="11" fill="#8a7f78">{startFret}fr</text>
+  )}
+  {frets.map((f, i) => f === 0 && (
+    <circle cx={stringX(i)} cy={padTop - 9} r="4" fill="none"
+            stroke="#8a7f78" stroke-width="1.4" />
+  ))}
+  {frets.map((f, i) => f > 0 && (
+    <circle cx={stringX(i)} cy={dotY(f - startFret + 1)} r="7.5" fill="#e8503a" />
+  ))}
+  {STRINGS.map((s, i) => (
+    <text x={stringX(i)} y={H - 2} text-anchor="middle"
+          font-size="10" fill="#b3a9a2" font-weight="600">{s}</text>
+  ))}
+</svg>
+
+<style>
+  .chord-diagram { display: block; }
+</style>

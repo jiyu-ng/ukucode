@@ -1,0 +1,97 @@
+---
+import Base from "../../layouts/Base.astro";
+import ChordDiagram from "../../components/ChordDiagram.astro";
+import { CHORDS, QUALITY_LABELS, chordSlug } from "../../data/chords.js";
+
+export function getStaticPaths() {
+  return CHORDS.map((c) => ({ params: { slug: chordSlug(c.name) }, props: { chord: c } }));
+}
+
+const { chord } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const STRINGS = ["G", "C", "E", "A"];
+
+// 운지 설명 문장
+const fingering = STRINGS.map((s, i) => {
+  const f = chord.frets[i];
+  return f === 0 ? `${s}현은 개방현(안 누름)` : `${s}현 ${f}프렛`;
+}).join(", ");
+
+const qualityLabel = QUALITY_LABELS[chord.quality];
+const akaText = chord.aka ? ` (${chord.aka})` : "";
+const title = `${chord.name} 코드`;
+const description = `우쿨렐레 ${chord.name}${akaText} 코드 잡는 법 — ${fingering}. ${qualityLabel} 코드 운지법을 다이어그램으로 확인하세요.`;
+
+// 관련 코드: 같은 루트 or 같은 품질 (자기 제외, 최대 8개)
+const related = CHORDS
+  .filter((c) => c.name !== chord.name && (c.root === chord.root || c.quality === chord.quality))
+  .slice(0, 8);
+---
+<Base title={title} description={description}>
+  <nav class="crumb"><a href={`${base}/`}>← 전체 코드</a></nav>
+
+  <article class="chord-page">
+    <header class="chord-head">
+      <h1>{chord.name} <span class="q">{qualityLabel}</span></h1>
+      {chord.aka && <p class="aka">다른 이름: {chord.aka}</p>}
+    </header>
+
+    <div class="diagram-wrap">
+      <ChordDiagram frets={chord.frets} size={1.7} />
+    </div>
+
+    <section class="howto">
+      <h2>{chord.name} 코드 잡는 법</h2>
+      <p>{fingering}.</p>
+      <table>
+        <thead><tr><th>현</th><th>프렛</th></tr></thead>
+        <tbody>
+          {STRINGS.map((s, i) => (
+            <tr>
+              <td>{s}현</td>
+              <td>{chord.frets[i] === 0 ? "개방현 (0)" : `${chord.frets[i]}프렛`}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    {related.length > 0 && (
+      <section class="related">
+        <h2>관련 코드</h2>
+        <div class="rel-grid">
+          {related.map((c) => (
+            <a class="rel" href={`${base}/chord/${chordSlug(c.name)}/`}>{c.name}</a>
+          ))}
+        </div>
+      </section>
+    )}
+  </article>
+
+  <style>
+    .crumb { margin: 4px 0 10px; }
+    .crumb a { color: var(--muted); text-decoration: none; font-size: 14px; }
+    .chord-head { text-align: center; margin-bottom: 8px; }
+    .chord-head h1 { font-size: 40px; margin: 6px 0 2px; letter-spacing: -1px; }
+    .chord-head .q { font-size: 15px; color: var(--accent); font-weight: 700; vertical-align: middle; }
+    .aka { color: var(--muted); font-size: 13.5px; margin: 0; }
+    .diagram-wrap {
+      display: flex; justify-content: center; background: var(--card);
+      border: 1px solid var(--line); border-radius: 20px; padding: 22px; margin: 14px auto 22px;
+      max-width: 280px;
+    }
+    .howto { max-width: 420px; margin: 0 auto 26px; }
+    .howto h2, .related h2 { font-size: 16px; border-bottom: 1px solid var(--line); padding-bottom: 7px; }
+    .howto p { font-size: 15px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+    th { color: var(--muted); font-weight: 600; }
+    .related { max-width: 520px; margin: 0 auto; }
+    .rel-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .rel {
+      background: var(--accent-soft); color: var(--accent); font-weight: 700;
+      padding: 7px 14px; border-radius: 999px; text-decoration: none; font-size: 14px;
+    }
+    .rel:hover { background: var(--accent); color: #fff; }
+  </style>
+</Base>
