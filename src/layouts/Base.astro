@@ -13,9 +13,16 @@ const desc = description || "우쿨렐레 코드 운지법을 다이어그램으
     <title>{fullTitle}</title>
     <meta name="description" content={desc} />
     <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="우쿨코드" />
+    <meta property="og:locale" content="ko_KR" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={desc} />
     <meta name="theme-color" content="#fbf7f2" />
     <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
   </head>
