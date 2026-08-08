@@ -1,6 +1,9 @@
 ---
-// 우쿨렐레 코드 다이어그램 (SVG). props: frets=[G,C,E,A], size 조절 가능.
-const { frets, size = 1 } = Astro.props;
+// 우쿨렐레 코드 다이어그램 (SVG). props: frets=[G,C,E,A], size 조절 가능, name(선택).
+// name이 있으면 접근명(aria-label)을 붙이고, 없으면(목록에서 옆 텍스트가 코드명을
+// 이미 읽어줌) 장식으로 처리(aria-hidden)해 스크린리더 중복 낭독을 막는다.
+const { frets, size = 1, name } = Astro.props;
+const label = name ? `${name} 코드 운지 다이어그램 (GCEA 튜닝)` : null;
 
 const STRINGS = ["G", "C", "E", "A"];
 const FRET_ROWS = 4; // 표시할 프렛 칸 수
@@ -26,7 +29,8 @@ const dotY = (r) => fretY(r - 1) + rowGap / 2; // r: 1..FRET_ROWS
 ---
 
 <svg class="chord-diagram" viewBox={`0 0 ${W} ${H}`} width={92 * size} height={113 * size}
-     role="img" xmlns="http://www.w3.org/2000/svg">
+     role={label ? "img" : undefined} aria-label={label} aria-hidden={label ? undefined : "true"}
+     xmlns="http://www.w3.org/2000/svg">
   {Array.from({ length: FRET_ROWS + 1 }).map((_, r) => (
     <line x1={padX} y1={fretY(r)} x2={padX + gridW} y2={fretY(r)}
           stroke="#3a3230" stroke-width={showNut && r === 0 ? 4 : 1.2}
