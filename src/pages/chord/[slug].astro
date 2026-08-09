@@ -26,8 +26,21 @@ const description = `우쿨렐레 ${chord.name}${akaText} 코드 잡는 법 — 
 const related = CHORDS
   .filter((c) => c.name !== chord.name && (c.root === chord.root || c.quality === chord.quality))
   .slice(0, 8);
+
+// 검색결과 경로(빵부스러기) 구조화 데이터
+const home = new URL(`${base}/`, Astro.site).href;
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "우쿨코드", item: home },
+    { "@type": "ListItem", position: 2, name: `${chord.name} 코드`, item: pageUrl },
+  ],
+};
 ---
 <Base title={title} description={description}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumbLd)} />
   <nav class="crumb"><a href={`${base}/`}>← 전체 코드</a></nav>
 
   <article class="chord-page">
