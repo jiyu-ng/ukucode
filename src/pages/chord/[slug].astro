@@ -2,6 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import ChordDiagram from "../../components/ChordDiagram.astro";
 import { CHORDS, QUALITY_LABELS, chordSlug } from "../../data/chords.js";
+import { SONGS } from "../../data/songs.js";
 
 export function getStaticPaths() {
   return CHORDS.map((c) => ({ params: { slug: chordSlug(c.name) }, props: { chord: c } }));
@@ -26,6 +27,14 @@ const description = `우쿨렐레 ${chord.name}${akaText} 코드 잡는 법 — 
 const related = CHORDS
   .filter((c) => c.name !== chord.name && (c.root === chord.root || c.quality === chord.quality))
   .slice(0, 8);
+
+// 이 코드가 실제로 쓰이는 노래: 곡 세그먼트의 코드심볼(c)에 이 코드가 있으면 매칭.
+// 코드↔노래 상호 내부 링크로 탐색·체류·색인을 높인다(수록곡 없으면 섹션 미표시).
+const usedInSongs = SONGS.filter((s) =>
+  s.sections.some((sec) =>
+    sec.lines.some((line) => line.some((seg) => seg.c === chord.name))
+  )
+);
 
 // 검색결과 경로(빵부스러기) 구조화 데이터
 const home = new URL(`${base}/`, Astro.site).href;
@@ -69,6 +78,17 @@ const breadcrumbLd = {
       </table>
     </section>
 
+    {usedInSongs.length > 0 && (
+      <section class="used-in">
+        <h2>{chord.name} 코드로 연주하는 노래</h2>
+        <div class="song-links">
+          {usedInSongs.map((s) => (
+            <a class="song-link" href={`${base}/song/${s.slug}/`}>🎵 {s.title}</a>
+          ))}
+        </div>
+      </section>
+    )}
+
     {related.length > 0 && (
       <section class="related">
         <h2>관련 코드</h2>
@@ -94,11 +114,19 @@ const breadcrumbLd = {
       max-width: 280px;
     }
     .howto { max-width: 420px; margin: 0 auto 26px; }
-    .howto h2, .related h2 { font-size: 16px; border-bottom: 1px solid var(--line); padding-bottom: 7px; }
+    .howto h2, .related h2, .used-in h2 { font-size: 16px; border-bottom: 1px solid var(--line); padding-bottom: 7px; }
     .howto p { font-size: 15px; }
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
     th { color: var(--muted); font-weight: 600; }
+    .used-in { max-width: 520px; margin: 0 auto 22px; }
+    .song-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .song-link {
+      background: var(--card); color: var(--ink); font-weight: 600;
+      padding: 8px 15px; border-radius: 999px; text-decoration: none; font-size: 14px;
+      border: 1px solid var(--line);
+    }
+    .song-link:hover { border-color: var(--accent); color: var(--accent); }
     .related { max-width: 520px; margin: 0 auto; }
     .rel-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
     .rel {
