@@ -15,8 +15,23 @@ const usedChordObjs = used.map((sym) => chordBySlug(chordSlug(sym))).filter(Bool
 
 const title = `${song.title} 우쿨렐레 코드`;
 const description = `우쿨렐레로 치는 ${song.title} 코드 악보 (${song.note}). 가사와 코드, 운지 다이어그램을 한눈에.`;
+
+// 검색결과 경로(빵부스러기) 구조화 데이터 — 코드 상세 페이지와 동일 패턴
+const home = new URL(`${base}/`, Astro.site).href;
+const songsUrl = new URL(`${base}/songs/`, Astro.site).href;
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "우쿨코드", item: home },
+    { "@type": "ListItem", position: 2, name: "곡 코드 악보", item: songsUrl },
+    { "@type": "ListItem", position: 3, name: song.title, item: pageUrl },
+  ],
+};
 ---
 <Base title={title} description={description}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumbLd)} />
   <nav class="crumb"><a href={`${base}/songs/`}>← 곡 목록</a></nav>
 
   <article class="song">
