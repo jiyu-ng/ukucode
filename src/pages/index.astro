@@ -5,8 +5,21 @@ import { groupedChords, chordSlug } from "../data/chords.js";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const groups = groupedChords();
+
+// 홈 구조화 데이터: 검색엔진이 사이트명·성격을 엔티티로 인식하도록 WebSite 스키마.
+// (코드·노래 상세엔 BreadcrumbList가 있으나 홈엔 없어서 보강)
+const siteUrl = new URL(`${base}/`, Astro.site).href;
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "우쿨코드",
+  url: siteUrl,
+  description: "우쿨렐레 코드·운지법을 다이어그램으로 한눈에 찾는 무료 코드 사전.",
+  inLanguage: "ko-KR",
+};
 ---
 <Base>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(websiteLd)} />
   <section class="intro">
     <h1>우쿨렐레 코드 사전</h1>
     <p>코드를 눌러 운지법 다이어그램을 크게 확인하세요. 표준 튜닝(G·C·E·A) 기준이에요.</p>
