@@ -55,6 +55,13 @@ const breadcrumbLd = {
       </section>
     )}
 
+    {song.rhythm && (
+      <section class="rhythm">
+        <h2>🥁 주법</h2>
+        <p>{song.rhythm}</p>
+      </section>
+    )}
+
     <section class="sheet">
       {song.sections.map((sec) => (
         <div class="sec">
@@ -90,6 +97,9 @@ const breadcrumbLd = {
     .note { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
     .badge { display: inline-block; background: #eaf6ea; color: #3f8f52; font-size: 11.5px; font-weight: 700; padding: 4px 11px; border-radius: 999px; }
     .used { margin-bottom: 24px; }
+    .rhythm { background: var(--accent-soft); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 20px; }
+    .rhythm h2 { font-size: 14px; color: var(--accent); font-weight: 800; margin: 0 0 6px; }
+    .rhythm p { font-size: 14.5px; margin: 0; line-height: 1.65; }
     .used h2, .sec-label { font-size: 14px; color: var(--muted); font-weight: 700; }
     .used h2 { border-bottom: 1px solid var(--line); padding-bottom: 7px; }
     .used-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }

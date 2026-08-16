@@ -34,8 +34,10 @@ export const CHORDS = [
   // ── 도미넌트 7 ──────────────────────────
   { name: "C7",  root: "C",  quality: "7", frets: [0, 0, 0, 1] },
   { name: "D7",  root: "D",  quality: "7", frets: [2, 2, 2, 3] },
+  { name: "D#7", aka: "Eb7", root: "D#", quality: "7", frets: [3, 3, 3, 4] },
   { name: "E7",  root: "E",  quality: "7", frets: [1, 2, 0, 2] },
   { name: "F7",  root: "F",  quality: "7", frets: [2, 3, 1, 3] },
+  { name: "F#7", aka: "Gb7", root: "F#", quality: "7", frets: [3, 4, 2, 4] },
   { name: "G7",  root: "G",  quality: "7", frets: [0, 2, 1, 2] },
   { name: "A7",  root: "A",  quality: "7", frets: [0, 1, 0, 0] },
   { name: "A#7", aka: "Bb7", root: "A#", quality: "7", frets: [1, 2, 1, 1] },
@@ -46,6 +48,7 @@ export const CHORDS = [
   { name: "Dmaj7", root: "D", quality: "maj7", frets: [2, 2, 2, 4] },
   { name: "Emaj7", root: "E", quality: "maj7", frets: [1, 3, 0, 2] },
   { name: "Fmaj7", root: "F", quality: "maj7", frets: [2, 4, 1, 3] },
+  { name: "F#maj7", aka: "Gbmaj7", root: "F#", quality: "maj7", frets: [3, 5, 2, 4] },
   { name: "Gmaj7", root: "G", quality: "maj7", frets: [0, 2, 2, 2] },
   { name: "Amaj7", root: "A", quality: "maj7", frets: [1, 1, 0, 0] },
 
@@ -56,6 +59,7 @@ export const CHORDS = [
   { name: "Dm7", root: "D", quality: "m7", frets: [2, 2, 1, 3] },
   { name: "Em7", root: "E", quality: "m7", frets: [0, 2, 0, 2] },
   { name: "Fm7", root: "F", quality: "m7", frets: [1, 3, 1, 3] },
+  { name: "F#m7", aka: "Gbm7", root: "F#", quality: "m7", frets: [2, 4, 2, 4] },
   { name: "Gm7", root: "G", quality: "m7", frets: [0, 2, 1, 1] },
 ];
 
