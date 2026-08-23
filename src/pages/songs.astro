@@ -5,8 +5,25 @@ import { SONGS, songChords } from "../data/songs.js";
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const title = "우쿨렐레 곡 코드 악보";
 const description = "우쿨렐레로 치는 저작권 프리 곡 코드 악보 모음. 동요·캐롤·민요를 가사와 코드로.";
+
+// 곡 목록 구조화 데이터(ItemList) — 홈(코드 목록)의 ItemList와 동일 패턴.
+// 이 목록이 페이지의 핵심 콘텐츠라, 검색엔진이 각 곡을 구조화된 항목으로 이해하고
+// 개별 곡 상세로 연결하도록 노출한다. (곡 상세엔 BreadcrumbList가 이미 있음)
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "우쿨렐레 곡 코드 악보 목록",
+  numberOfItems: SONGS.length,
+  itemListElement: SONGS.map((s, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    url: new URL(`${base}/song/${s.slug}/`, Astro.site).href,
+    name: `${s.title} 우쿨렐레 코드`,
+  })),
+};
 ---
 <Base title={title} description={description}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
   <section class="intro">
     <h1>곡 코드 악보</h1>
     <p>우쿨렐레로 바로 칠 수 있는 곡들이에요. 곡을 눌러 가사+코드를 확인하세요.</p>
