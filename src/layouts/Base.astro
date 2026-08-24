@@ -54,6 +54,16 @@ const desc = description || "우쿨렐레 코드 운지법을 다이어그램으
       }
       * { box-sizing: border-box; }
       html { -webkit-text-size-adjust: 100%; }
+      /* 모션 민감 사용자(전정기능 장애 등)를 위해 애니메이션·이동 효과를 최소화 (WCAG 2.3.3) */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+        .card:hover { transform: none; }
+      }
       .skip-link {
         position: absolute; left: 8px; top: -48px; z-index: 100;
         background: var(--accent); color: #fff; padding: 8px 14px;
