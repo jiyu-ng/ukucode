@@ -9,6 +9,20 @@ const description = "우쿨렐레로 치는 저작권 프리 곡 코드 악보 �
 // 곡 목록 구조화 데이터(ItemList) — 홈(코드 목록)의 ItemList와 동일 패턴.
 // 이 목록이 페이지의 핵심 콘텐츠라, 검색엔진이 각 곡을 구조화된 항목으로 이해하고
 // 개별 곡 상세로 연결하도록 노출한다. (곡 상세엔 BreadcrumbList가 이미 있음)
+// 검색결과 경로(빵부스러기) — 곡 상세·코드 상세와 동일 패턴.
+// 이 페이지만 빠져 있었다(55p 중 53p 보유, 홈은 최상위라 원래 없음).
+// 목록 페이지에 경로가 없으면 검색결과에서 상세 페이지와 계층이 안 이어진다.
+const home = new URL(`${base}/`, Astro.site).href;
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "우쿨코드", item: home },
+    { "@type": "ListItem", position: 2, name: "곡 코드 악보", item: pageUrl },
+  ],
+};
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
@@ -23,6 +37,7 @@ const jsonLd = {
 };
 ---
 <Base title={title} description={description}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumbLd)} />
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
   <section class="intro">
     <h1>곡 코드 악보</h1>
