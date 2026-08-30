@@ -38,7 +38,11 @@
 
 ## ROADMAP (개선 백로그 — 처리하면 [x], 새 아이디어 추가)
 
-- [ ] `<head>` SEO 점검: 각 코드/노래 페이지 title·description·canonical·OG 유무
+- [x] `<head>` SEO 점검 (2026-08-30 실측): title·description·canonical·og:title·twitter:card **56/56 전 페이지 정상**.
+      Base.astro 에 중앙화돼 있어 `src/pages/` 만 grep 하면 0건으로 보이니 주의 — **dist 로 확인할 것**.
+- [x] 404 페이지 `noindex, follow` (2026-08-30). 이전엔 `index, follow` 라 색인 시 soft-404 신호가 됐다.
+- [ ] **og:image 없음 (0/56)** — 카톡·트위터 공유 시 썸네일이 안 뜬다. 1200×630 브랜드 이미지 1장 +
+      `og:image`·`twitter:card=summary_large_image`. ⚠️ 브랜드 인상이 걸려 **리뷰行**
 - [ ] sitemap(@astrojs/sitemap) + robots.txt 확인/추가
 - [ ] 코드 다이어그램(ChordDiagram) 모바일 가독성·접근성(alt/aria)
 - [ ] 코드/노래 목록 검색·필터 UX (검토는 리뷰行)

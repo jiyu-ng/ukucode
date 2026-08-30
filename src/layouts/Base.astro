@@ -1,5 +1,5 @@
 ---
-const { title, description } = Astro.props;
+const { title, description, noindex = false } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const path = Astro.url.pathname.replace(/\/$/, "");
@@ -16,7 +16,12 @@ const desc = description || "우쿨렐레 코드 운지법을 다이어그램으
     <title>{fullTitle}</title>
     <meta name="description" content={desc} />
     <link rel="canonical" href={canonical} />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
+    {/* 404 등 유틸리티 페이지는 색인 제외 — 색인되면 soft-404 신호가 되고
+        크롤 예산도 낭비된다. 링크는 따라가게 follow 는 유지. */}
+    <meta
+      name="robots"
+      content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large"}
+    />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="우쿨코드" />
     <meta property="og:locale" content="ko_KR" />
