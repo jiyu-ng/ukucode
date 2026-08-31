@@ -41,11 +41,37 @@
 - [x] `<head>` SEO 점검 (2026-08-30 실측): title·description·canonical·og:title·twitter:card **56/56 전 페이지 정상**.
       Base.astro 에 중앙화돼 있어 `src/pages/` 만 grep 하면 0건으로 보이니 주의 — **dist 로 확인할 것**.
 - [x] 404 페이지 `noindex, follow` (2026-08-30). 이전엔 `index, follow` 라 색인 시 soft-404 신호가 됐다.
-- [ ] **og:image 없음 (0/56)** — 카톡·트위터 공유 시 썸네일이 안 뜬다. 1200×630 브랜드 이미지 1장 +
-      `og:image`·`twitter:card=summary_large_image`. ⚠️ 브랜드 인상이 걸려 **리뷰行**
-- [ ] sitemap(@astrojs/sitemap) + robots.txt 확인/추가
-- [ ] 코드 다이어그램(ChordDiagram) 모바일 가독성·접근성(alt/aria)
+> ⚠️ **`[ ]` 를 「안 됐다」로 읽지 말 것.** 2026-08-31 슬롯이 아래 다섯 항목을 재확인하는 데 통째로
+> 쓰였고, **전부 이미 구현돼 있었다.** 로드맵은 구현보다 늦게 낡는다 —
+> **손대기 전에 `dist` 로 실측**하고, 끝난 건 결과를 숫자로 적어 닫는다.
+
+- [ ] **og:image 없음 (0/55, 2026-08-31 재확인)** — 카톡·트위터 공유 시 썸네일이 안 뜬다. 1200×630 브랜드
+      이미지 1장 + `og:image`·`twitter:card=summary_large_image`. ⚠️ 브랜드 인상이 걸려 **리뷰行**
+- [ ] 🔴 **thin content — 코드 페이지 본문이 평균 216~269자** (2026-08-31 실측, 49페이지 전수).
+      노래 링크 있는 14개는 269자, 없는 35개는 216자. 최소 `/chord/b` 191자.
+      **광고 수익 사이트라 SEO·애드센스 양쪽에 걸리는 자리**인데, 코드별 설명을 붙이는 건
+      **콘텐츠 결정이라 이 크론 범위 밖**이다(가이드: 콘텐츠 추가 X). ⚠️ **대표님 판단 필요**
+      측정: `dist/chord/*/index.html` 에서 script·style 제거 후 태그 벗기고 글자수
 - [ ] 코드/노래 목록 검색·필터 UX (검토는 리뷰行)
-- [ ] 내부 링크 강화(관련 코드·이 코드가 쓰인 노래 상호 링크)
-- [ ] 폰트/이미지 로딩 최적화, 접근성(색 대비·포커스) 점검
-- [ ] Article/BreadcrumbList 등 구조화 데이터
+
+### ✅ 끝난 것 (다시 열지 말 것 — 확인 방법 포함)
+
+- [x] `<head>` SEO (2026-08-30): title·description·canonical·og:title·twitter:card 전 페이지 정상.
+      `Base.astro` 에 중앙화돼 있어 `src/pages/` 만 grep 하면 0건으로 보인다 — **dist 로 확인.**
+- [x] 404 `noindex, follow` (2026-08-30). 이전엔 `index, follow` 라 색인 시 soft-404 신호였다.
+- [x] **sitemap + robots.txt** (2026-08-31 실측). `astro.config` 에 `@astrojs/sitemap` 통합돼 있고
+      `dist/sitemap-0.xml` **55 URL = dist 페이지 55개, 누락 0**. base `/ukucode` 정상.
+      ⚠️ `grep -c '<loc>'` 는 **1** 을 준다 — XML 이 한 줄이라 `-c` 가 줄을 센다. `grep -o … | wc -l` 로 셀 것.
+- [x] **ChordDiagram 접근성** (2026-08-31). `role="img"`+`aria-label`, 이름 없으면 `aria-hidden`
+      (목록에서 옆 텍스트가 코드명을 읽어줘 중복 낭독 방지). 의도까지 주석에 적혀 있다.
+- [x] **내부 링크 상호 연결** (2026-08-31). `chord/[slug].astro` 가 `usedInSongs` 로 「이 코드로 연주하는
+      노래」 섹션을 만든다. 49개 중 **14개에 노래 링크**(4곡이 쓰는 코드가 14종이라 그렇고, 나머지 35개는
+      섹션이 안 뜨는 게 정상). ⚠️ **표본을 `/chord/a/` 로 잡으면 0건이라 「미구현」으로 오판한다** — 실제로
+      쓰이는 코드(`c`·`f`·`g`)로 확인할 것.
+- [x] **구조화 데이터** (2026-08-31). 55/55 페이지에 JSON-LD.
+      `BreadcrumbList 54 · HowTo 49 · HowToStep 196 · ItemList 2 · WebSite 1`.
+- [x] **폰트/이미지 로딩** (2026-08-31). **추가 최적화 여지 없음** — 외부 오리진 참조가 **0개**라
+      `preconnect` 를 붙일 데가 없고(`schema.org`·`w3.org` 는 네임스페이스 문자열), `<img>` 도 0개라
+      lazy load 대상이 없다. **없는 걸 넣지 말 것.**
+- [x] **접근성 기본** (2026-08-31). `lang`·skip link·`<main>`·`:focus-visible`·`h1`·`theme-color` 전부 있음.
+      헤딩 순서 `h1→h2→h2→h2` 정상.
