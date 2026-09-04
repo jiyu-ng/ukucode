@@ -76,5 +76,9 @@
 - [x] **폰트/이미지 로딩** (2026-08-31). **추가 최적화 여지 없음** — 외부 오리진 참조가 **0개**라
       `preconnect` 를 붙일 데가 없고(`schema.org`·`w3.org` 는 네임스페이스 문자열), `<img>` 도 0개라
       lazy load 대상이 없다. **없는 걸 넣지 말 것.**
+- [x] **메타태그 전수 실측** (2026-09-04, dist 56페이지). description 누락 0 · canonical 누락 0 ·
+      중복 title 0 · 중복 description 0 · title 60자 초과 0 · description 160자 초과 0(최장 111자) ·
+      JSON-LD 파싱 실패 0. **이 축은 더 팔 게 없다** — 다음 슬롯에서 재점검하지 말 것.
+      측정: `dist/**/index.html` 을 파싱해 title·description·canonical 추출 + `json.loads` 로 LD 검증.
 - [x] **접근성 기본** (2026-08-31). `lang`·skip link·`<main>`·`:focus-visible`·`h1`·`theme-color` 전부 있음.
       헤딩 순서 `h1→h2→h2→h2` 정상.
