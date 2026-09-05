@@ -57,6 +57,10 @@
       측정: `dist/chord/*/index.html` 에서 script·style 제거 후 태그 벗기고 글자수
 - [ ] 코드/노래 목록 검색·필터 UX (검토는 리뷰行)
 
+> 📌 **2026-09-05 기준, 자동머지 가능한 개선거리는 고갈됐다.** 위 두 개(`og:image`·검색 UX)만
+> 남았고 **둘 다 대표님 판단이 필요한 리뷰行**이다. 다음 슬롯은 **새 축을 찾거나 조용히 패스**한다 —
+> 이미 닫힌 축을 다시 재는 데 슬롯을 쓰지 말 것.
+
 ### ✅ 끝난 것 (다시 열지 말 것 — 확인 방법 포함)
 
 - [x] `<head>` SEO (2026-08-30): title·description·canonical·og:title·twitter:card 전 페이지 정상.
@@ -80,5 +84,16 @@
       중복 title 0 · 중복 description 0 · title 60자 초과 0 · description 160자 초과 0(최장 111자) ·
       JSON-LD 파싱 실패 0. **이 축은 더 팔 게 없다** — 다음 슬롯에서 재점검하지 말 것.
       측정: `dist/**/index.html` 을 파싱해 title·description·canonical 추출 + `json.loads` 로 LD 검증.
+- [x] **내부 링크 그래프 실측** (2026-09-05, dist 55페이지). **고아 페이지 0건.**
+      코드 49페이지 전부 outbound **11~14개**(관련 코드 8 + 내비), inbound **최소 1**.
+      `chord/[slug].astro:26` 의 `related`(같은 루트 or 같은 품질, 최대 8)가 이미 상호 연결을 만든다.
+      ⚠️ **「노래 링크가 35개에 없다」를 링크 부족으로 읽지 말 것** — 관련 코드 링크가 따로 있어
+      막다른 페이지가 아니다. **이 축은 더 팔 게 없다.**
+      측정: dist 전 HTML에서 `href="/ukucode/…"` 수집 → 자기 자신 제외 후 inbound/outbound 집계
+- [x] **robots·favicon·번들** (2026-09-05 실측). `robots.txt` Sitemap 라인 정상(`sitemap-index.xml`),
+      sitemap `<loc>` **55개 = dist 페이지 55개**, `favicon.svg` 참조·실파일 둘 다 존재(404 아님),
+      404 `noindex, follow` 유지, dist 총 **848K**(별도 JS/CSS 번들 없음 — 인라인). **최적화 여지 없음.**
+      ⚠️ `<loc>` 는 `grep -o '<loc>' | wc -l` 로 셀 것(`grep -c` 는 1).
+
 - [x] **접근성 기본** (2026-08-31). `lang`·skip link·`<main>`·`:focus-visible`·`h1`·`theme-color` 전부 있음.
       헤딩 순서 `h1→h2→h2→h2` 정상.
