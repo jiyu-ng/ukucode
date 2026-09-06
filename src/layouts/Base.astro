@@ -54,7 +54,9 @@ const desc = description || "우쿨렐레 코드 운지법을 다이어그램으
 
     <style is:global>
       :root {
-        --bg: #fbf7f2; --card: #ffffff; --ink: #35302c; --muted: #8a7f78;
+        /* --muted 는 14px 이하 본문(내비·태그라인·푸터)에 쓰이므로 WCAG AA 4.5:1 을 넘겨야 한다.
+           #8a7f78 은 bg 대비 3.65 로 미달이었다 (2026-09-06 실측). 색상(H)·채도는 그대로 두고 명도만 낮췄다. */
+        --bg: #fbf7f2; --card: #ffffff; --ink: #35302c; --muted: #7a706a;
         --line: #ece3da; --accent: #e8503a; --accent-soft: #fdeee9;
       }
       * { box-sizing: border-box; }
