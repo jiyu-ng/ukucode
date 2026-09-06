@@ -42,7 +42,7 @@ const dotY = (r) => fretY(r - 1) + rowGap / 2; // r: 1..FRET_ROWS
   ))}
   {!showNut && (
     <text x={padX - 7} y={dotY(1) + 4} text-anchor="end"
-          font-size="11" fill="#8a7f78">{startFret}fr</text>
+          font-size="11" fill="#7a706a">{startFret}fr</text>
   )}
   {frets.map((f, i) => f === 0 && (
     <circle cx={stringX(i)} cy={padTop - 9} r="4" fill="none"
