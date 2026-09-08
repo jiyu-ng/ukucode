@@ -124,8 +124,14 @@ const jsonLd = {
   </article>
 
   <style>
-    .crumb { margin: 4px 0 10px; }
-    .crumb a { color: var(--muted); text-decoration: none; font-size: 14px; }
+    .crumb { margin: 2px 0 8px; }
+    /* 뒤로가기는 상세 → 목록으로 돌아가는 주 동선인데 14px 텍스트만이라 높이가 17px 였다.
+       WCAG 2.5.8 은 터치 대상을 최소 24×24 로 본다(2026-09-08 모바일 뷰포트 실측).
+       inline-block + 세로 패딩으로 25px 로 올리고, 음수 마진으로 좌측 정렬은 그대로 뒀다. */
+    .crumb a {
+      color: var(--muted); text-decoration: none; font-size: 14px;
+      display: inline-block; padding: 4px 6px; margin-left: -6px;
+    }
     .chord-head { text-align: center; margin-bottom: 8px; }
     .chord-head h1 { font-size: 40px; margin: 6px 0 2px; letter-spacing: -1px; }
     .chord-head .q { font-size: 15px; color: var(--accent); font-weight: 700; vertical-align: middle; }
