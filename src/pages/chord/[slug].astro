@@ -141,6 +141,14 @@ const jsonLd = {
       border: 1px solid var(--line); border-radius: 20px; padding: 22px; margin: 14px auto 22px;
       max-width: 280px;
     }
+    /* 이 페이지의 주인공은 운지 다이어그램인데, 카드가 확보한 가용 폭
+       (280 − 테두리 2 − 좌우 패딩 44 = 234px) 중 156px 만 쓰고 있었다 (2026-09-11 실측).
+       ⚠️ 처음엔 236px 로 적었다가 실측 234px 와 어긋나 잡았다 — border 2px 를 빼먹은 것.
+       SVG 의 width/height 가 속성으로 고정돼 컨테이너를 안 따라간 것이고,
+       viewBox 가 있으니 폭만 풀어주면 비율은 그대로 유지된다.
+       카드 크기·레이아웃은 안 바뀌고 버려지던 여백만 그림이 쓴다.
+       ⚠️ 컴포넌트가 Astro scoped 라 :global() 없이는 이 규칙이 안 먹는다. */
+    .diagram-wrap :global(.chord-diagram) { width: 100%; height: auto; }
     .howto { max-width: 420px; margin: 0 auto 26px; }
     .howto h2, .related h2, .used-in h2 { font-size: 16px; border-bottom: 1px solid var(--line); padding-bottom: 7px; }
     .howto p { font-size: 15px; }
