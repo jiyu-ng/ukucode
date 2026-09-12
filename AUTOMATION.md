@@ -66,6 +66,27 @@
       ```
       **이 축들은 더 팔 게 없다.**
 
+- [x] **내부 링크 대소문자·실존** (2026-09-12 실측) — **이상 0건.**
+      ```
+      검사한 내부 링크        832개
+      산출물에 없는 대상       0개
+      대문자가 섞인 링크       0개   ← GitHub Pages 는 case-sensitive 라 이게 핵심
+      ```
+      ✅ **되는 법 — 파일시스템에 묻지 않고 문자열끼리 비교한다.** macOS 는 대소문자를 안 가려서
+      `os.path.exists` 로는 이 축을 못 잰다. 산출물 경로를 **집합으로 만들어** href 와 대조한다.
+      ```python
+      paths = {'/'+os.path.relpath(p,'dist') for p in glob.glob('dist/**/*', recursive=True)}
+      dirs  = {'/'+os.path.relpath(os.path.dirname(p),'dist')+'/' for p in glob.glob('dist/**/index.html', recursive=True)}
+      # href 에서 BASE 를 떼고 dirs|paths 에 있는지 — in 은 대소문자를 가린다
+      ```
+      ⚠️ **대조군까지 돌려서 「울려야 할 때 우는지」 확인했다.** 안 하면 검사가 죽어도 0 이라 똑같이 보인다.
+      ```
+      /ukucode/chord/a/    실재     → 통과 ✅
+      /ukucode/chord/A/    대문자   → 잡힘 🔴   ← FS 로는 절대 못 잡는 자리
+      /ukucode/chord/zzz/  없는 것  → 잡힘 🔴
+      /ukucode/chords/a/   오타     → 잡힘 🔴
+      ```
+
       ⚠️ **그런데 이 슬롯에서 내 측정 도구가 「없음」을 두 번 지어냈다.** 결론보다 이게 중요하다.
       ```
       ① @type 없는 JSON-LD 50개   → 이 저장소는 @graph 로 감싼다. 내 파서가 안 펼친 것
