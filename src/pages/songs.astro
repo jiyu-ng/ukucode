@@ -68,9 +68,15 @@ const jsonLd = {
       transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
     }
     .song-item:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.07); border-color: var(--accent); }
-    .si-main { display: flex; flex-direction: column; }
+    /* 🔴 si-main 에 min-width:0 이 없으면 제목이 코드 줄에 밀려 세로로 찌그러진다.
+       flex 자식의 기본 min-width 는 auto 라 「내용보다 작아지지 않으려」 버틴다. */
+    .si-main { display: flex; flex-direction: column; min-width: 0; }
     .si-title { font-size: 16.5px; font-weight: 700; }
     .si-note { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
-    .si-chords { font-size: 13px; color: var(--accent); font-weight: 700; text-align: right; white-space: nowrap; }
+    /* 🔴 white-space:nowrap 이었다. 코드가 많은 곡(11개)에서 한 줄로 뻗어
+       375px 화면에서 문서 폭이 526px 이 됐고, 그 압력으로 제목이 한 글자씩
+       쪼개졌다(2026-09-14 실측: /songs/ 만 +151px 가로 스크롤).
+       → 줄바꿈을 허용하고 코드 영역이 절반을 넘지 않게 막는다. */
+    .si-chords { font-size: 13px; color: var(--accent); font-weight: 700; text-align: right; max-width: 50%; }
   </style>
 </Base>
