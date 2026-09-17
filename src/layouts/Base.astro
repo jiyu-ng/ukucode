@@ -100,6 +100,31 @@ const desc = description || "우쿨렐레 코드 운지법을 다이어그램으
         color: var(--accent); border-color: var(--accent); background: var(--accent-soft);
       }
       .site-foot { text-align: center; color: var(--muted); font-size: 12.5px; padding: 24px 18px 40px; }
+
+      /* 🖨️ 인쇄 — 우쿨렐레는 곡을 종이로 뽑아 보면대에 올리는 게 실제 사용이다.
+         이 블록은 @media print 안에만 있어 화면 표시에는 아무 영향이 없다.
+         실측(2026-09-15): print 미디어에서 header 2 · nav 2 · footer 1 · crumb 1 이
+         전부 보였고, A4 상단 1/6을 로고·탭이 차지하고 있었다. */
+      @media print {
+        .site-head, .site-nav, .site-foot, .skip-link, .crumb { display: none !important; }
+
+        /* 잉크를 아끼고 대비를 올린다 */
+        body { background: #fff !important; color: #000 !important; }
+        a { color: #000 !important; text-decoration: none !important; }
+
+        /* 보면대에서 읽는 크기 — 화면(17px)보다 한 단계 키운다.
+           🔴 처음에 15px 로 적어 오히려 줄였다. 렌더해서 재고서야 보였다 —
+              화면 기본값을 모르고 절대값을 박으면 방향이 뒤집힌다. */
+        .seg-lyric { font-size: 19px !important; }
+        .seg-chord { font-weight: 700 !important; }
+
+        /* 코드 다이어그램과 가사 줄이 페이지 경계에서 잘리면 못 쓴다 */
+        .sheet, .line, .sec, figure, svg { break-inside: avoid; page-break-inside: avoid; }
+        .song-head { break-after: avoid; page-break-after: avoid; }
+
+        /* 카드 테두리·그림자는 종이에서 의미가 없다 */
+        .sheet { border: none !important; box-shadow: none !important; padding: 0 !important; }
+      }
     </style>
   </body>
 </html>
